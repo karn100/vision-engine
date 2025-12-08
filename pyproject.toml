@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vision_engine"
+version = "0.1.0"
+description = "From scratch CNN/vision_engine architecture"
+authors = [{ name = "Karan Kalia" }]
+dependencies = ["torch>=2.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["core*"]
