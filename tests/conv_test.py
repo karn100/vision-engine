@@ -1,8 +1,8 @@
-from core.layers.conv import conv2d
+from core.layers.conv import Conv2d
 import torch
 
 if __name__ == "__main__":
-    conv = conv2d(3,8,kernel_size=3,padding=1)
+    conv = Conv2d(3,8,kernel_size=3,padding=1)
     x = torch.randn(1,3,32,32)
     y = conv(x)
     print(y.shape)

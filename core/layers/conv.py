@@ -14,7 +14,7 @@ def im2col(x,kernel_size=3,stride=1,padding=0,dilation=1):
     cols = cols.contiguous().view(N,C*KH*KW,H_out*W_out)
     return cols
 
-class conv2d(nn.Module):
+class Conv2d(nn.Module):
     def __init__(self,in_channels,out_channels,kernel_size,stride = 1,padding = 0,dilation = 1,bias = True):
         super().__init__()
 
@@ -56,9 +56,3 @@ class conv2d(nn.Module):
 
         out = out.view(N,self.out_channels,H_out,W_out)
         return out
-    
-
-
-        
-
-        

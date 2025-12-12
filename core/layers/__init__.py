@@ -1,1 +1,1 @@
-from .conv import conv2d
+from .conv import Conv2d
