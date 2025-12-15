@@ -1,0 +1,32 @@
+
+
+data:
+  name: "CIFAR10"
+  root: "./data"
+  batch_size: 128
+  num_workers: 4
+  shuffle: True
+  augment: True
+
+model:
+  name: "SimpleCNN"
+  num_classes: 10
+  in_channels: 3
+  image_size: 32
+
+optimizer:
+  type: "adam"
+  lr: 0.001
+  momentum: 0.9
+  weight_decay: 0.0005
+
+scheduler:
+  step_size: 15
+  gamma: 0.5
+
+train:
+  epochs: 50
+  device: "cpu"
+  save_dir: "./checkpoints"
+  log_interval: 100
+  seed: 42
