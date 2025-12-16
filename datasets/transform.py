@@ -13,11 +13,6 @@ def get_train_transform(config):
         
         if aug_config.get("random_crop",False):
             aug_list.extend([
-                A.PadIfNeeded(
-                    min_height=aug_config["crop_size"] + 4,
-                    min_width=aug_config["crop_size"] + 4,
-                    border_mode=0
-                ),
                 A.RandomCrop(
                     width=aug_config["crop_size"],
                     height=aug_config["crop_size"],
@@ -38,7 +33,7 @@ def get_train_transform(config):
                 max_holes=aug_config["cutout_holes"],
                 max_height=aug_config["cutout_size"],
                 max_width=aug_config["cutout_size"],
-                fill_value=aug_config["cutout_fill"],
+                fill=aug_config["cutout_fill"],
                 p=aug_config["cutout_p"]
             ))
         

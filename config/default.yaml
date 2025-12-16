@@ -13,7 +13,7 @@ model:
   image_size: 32
 
 optimizer:
-  type: "sgd"
+  type: "adam"
   lr: 0.1
   momentum: 0.9
   weight_decay: 0.0005
@@ -23,7 +23,7 @@ scheduler:
   gamma: 0.5
 
 train:
-  epochs: 50
+  epochs: 60
   device: "cuda"
   save_dir: "./checkpoints"
   log_interval: 100

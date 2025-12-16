@@ -26,16 +26,30 @@ class SimpleCNN(nn.Module):
             RelU(),
             MaxPool2d(2)
         )
+        self.conv_block3 = nn.Sequential(
+            Conv2d(64,128,kernel_size=3,padding=1),
+            BatchNorm2d(128),
+            RelU(),
+            MaxPool2d(2)
+        )
+        self.conv_block4 = nn.Sequential(
+            Conv2d(128,256,kernel_size=3,padding=1),
+            BatchNorm2d(256),
+            RelU(),
+            MaxPool2d(2)
+        )
 
         self.fc = nn.Sequential(
-            Linear(64*8*8,128),
+            Linear(256*2*2,256),
             RelU(),
-            Linear(128,num_classes)
+            Linear(256,num_classes)
         )
     
     def forward(self,x):
         x = self.conv_block1(x)
         x = self.conv_block2(x)
+        x = self.conv_block3(x)
+        x = self.conv_block4(x)
         x = x.view(x.size(0),-1)
         x = self.fc(x)
         return x
