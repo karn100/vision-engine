@@ -23,30 +23,29 @@ def load_config(path="config/default.yaml"):
 def main():
     config = load_config()
     set_seed(config["train"]["seed"])
-    device = torch.device(config["train"]["device"] if torch.cuda.is_available else "cpu")
+    device = torch.device(config["train"]["device"] if torch.cuda.is_available() else "cpu")
     print(f"Using Device: {device}")
 
-    train_dataset,val_dataset = get_cifar10_dataset(
-        root=config["data"]["root"],
-        augment=config["data"]["augment"]
-    )
+    train_dataset,val_dataset = get_cifar10_dataset(config=config)
 
     train_loader = DataLoader(
         train_dataset,
         batch_size=config["data"]["batch_size"],
         shuffle=config["data"]["shuffle"],
-        num_workers=config["data"]["num_workers"]
+        num_workers=config["data"]["num_workers"],
+        pin_memory=True
     )
 
     val_loader = DataLoader(
         val_dataset,
         batch_size=config["data"]["batch_size"],
-        shuffle = config["data"]["shuffle"],
-        num_workers=config["data"]["num_workers"]
+        shuffle = False,
+        num_workers=config["data"]["num_workers"],
+        pin_memory=True
     )
 
     model = SimpleCNN(num_classes=config["model"]["num_classes"])
-    print(f"Model {config["model"]["name"]} Initialized")
+    print(f"Model {config['model']['name']} Initialized")
 
     trainer = Trainer(
         model=model,

@@ -1,47 +1,38 @@
-import torch
+import numpy as np
 from torchvision.datasets import CIFAR10
-from torchvision import transforms
-from torch.utils.data import random_split
+import albumentations as A
+from torch.utils.data import Dataset
+from .transform import get_train_transform,get_val_transform
 
-def get_transfrom(train=True):
-    if train:
-        return transforms.Compose([
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomCrop(32,padding=1),
-            transforms.ToTensor(),
-            transforms.Normalize(
-                 mean=(0.4914, 0.4822, 0.4465),
-                 std=(0.2023, 0.1994, 0.2010)
-            )
-        ])
-    else:
-        return transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize(
-                 mean=(0.4914, 0.4822, 0.4465),
-                 std=(0.2023, 0.1994, 0.2010)
-            )
-        ])
-
-def get_cifar10_dataset(root="./data",augment=True,val_split=0.1):
+class CIFAR10Albumentations(Dataset):
+    def __init__(self,root,train=True,transform=None,download=True):
+        self.dataset = CIFAR10(root=root,train=train,download=download)
+        self.transform = transform
     
-    full_train = CIFAR10(
-        root=root,
+    def __len__(self):
+        return len(self.dataset)
+    
+    def __getitem__(self, idx):
+        image,label = self.dataset[idx]
+        image = np.array(image)
+        if self.transform:
+            image = self.transform(image=image)["image"]
+        return image,label
+
+def get_cifar10_dataset(config):
+    train_transform = get_train_transform(config)
+    val_transform = get_val_transform()
+
+    train_dataset = CIFAR10Albumentations(
+        root=config["data"]["root"],
         train=True,
-        download=True,
-        transform=get_transfrom(train=augment)
+        transform=train_transform,
+        download=True
     )
-
-    val_transform = get_transfrom(train=False)
-
-    val_size = int(len(full_train)*val_split)
-    train_size = len(full_train) - val_size
-
-    train_dataset,val_dataset = random_split(
-        full_train,[train_size,val_size]
+    val_dataset = CIFAR10Albumentations(
+        root=config["data"]["root"],
+        train=False,
+        transform=val_transform,
+        download=True
     )
-
-    val_dataset.dataset.transform = val_transform
-
     return train_dataset,val_dataset
-
