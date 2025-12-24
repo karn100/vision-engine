@@ -15,8 +15,8 @@ model:
   num_classes: 10
 
 optimizer:
-  name: "adam"
-  lr: 3e-4
+  type: "adam"
+  lr: 0.001
   weight_decay: 0.0005
 
 scheduler:
