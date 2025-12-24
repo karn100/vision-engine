@@ -1,0 +1,54 @@
+data:
+  name: "CIFAR10"
+  root: "./data"
+  batch_size: 128
+  num_workers: 4
+  shuffle: True
+  augment: True
+  image_size: 32
+  in_channels: 3
+
+model:
+  name: "resnet18"
+  block: "BasicBlock"
+  layers: [2,2,2,2]
+  num_classes: 10
+
+optimizer:
+  name: "adam"
+  lr: 3e-4
+  weight_decay: 0.0005
+
+scheduler:
+  type: "step"
+  step_size: 30
+  gamma: 0.1
+
+train:
+  epochs: 100
+  device: "cuda"
+  save_dir: "./checkpoints"
+  log_interval: 100
+  seed: 42
+
+augmentations:
+  horizontal_flip: True
+  horizontal_flip_p: 0.5
+
+  random_crop: True
+  crop_size: 32
+  random_crop_p: 0.8
+
+  color_jitter: True
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.2
+  hue: 0.1
+  color_jitter_p: 0.4
+
+  cutout: True
+  cutout_holes: 1
+  cutout_size: 8
+  cutout_fill: 0
+  cutout_p: 0.5
+  

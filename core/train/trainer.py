@@ -16,14 +16,14 @@ class Trainer:
 
         if config["optimizer"]["type"].lower() == "sgd":
             self.optimizer = optim.SGD(
-                model.parameters(),
+                self.model.parameters(),
                 lr=config["optimizer"]["lr"],
                 momentum=config["optimizer"]["momentum"],
                 weight_decay=config["optimizer"]["weight_decay"]
             )
         elif config["optimizer"]["type"].lower() == "adam":
             self.optimizer = optim.Adam(
-                model.parameters(),
+                self.model.parameters(),
                 lr=config["optimizer"]["lr"],
                 weight_decay=config["optimizer"]["weight_decay"]
             )

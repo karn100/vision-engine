@@ -5,17 +5,18 @@ import random
 from torch.utils.data import DataLoader
 from datasets.cifar10_loader import get_cifar10_dataset
 from core.model.simple_cnn import SimpleCNN
+from core.model.model_builder import build_model
 from core.train.trainer import Trainer
 
 def set_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-def load_config(path="config/default.yaml"):
+def load_config(path="config/resnet.yaml"):
     with open(path,"r") as f:
         config = yaml.safe_load(f)
     return config
@@ -44,7 +45,7 @@ def main():
         pin_memory=True
     )
 
-    model = SimpleCNN(num_classes=config["model"]["num_classes"])
+    model = build_model(config)
     print(f"Model {config['model']['name']} Initialized")
 
     trainer = Trainer(
